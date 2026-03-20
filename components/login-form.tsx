@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +19,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const handleLogin = () => {
-    window.location.href = "http://localhost:3000/api/auth/login";
+    window.location.assign(`${window.location.origin}/api/auth/login`);
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

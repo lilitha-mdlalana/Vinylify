@@ -1,9 +1,16 @@
-"use client"
+import { PlayerShell } from "@/components/player-shell";
+import { Suspense } from "react";
 
 export default function PlayerPage() {
-    return (
-        <div>
-            <h1>Player</h1>
+  return (
+    <Suspense
+      fallback={
+        <div className="text-muted-foreground flex min-h-0 flex-1 items-center justify-center text-sm">
+          Loading player…
         </div>
-    )
+      }
+    >
+      <PlayerShell />
+    </Suspense>
+  );
 }

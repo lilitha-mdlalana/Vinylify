@@ -1,0 +1,455 @@
+.vinyl-player-root {
+  --record-size: min(68vmin, 520px);
+  --label-padding: min(7vmin, 40px);
+  --record-color: #000;
+  --record-groove-color: #141414;
+  --arm-base-size: calc(var(--record-size) / 5.5);
+  /* Tonearm sweeps from top-right pivot toward the label */
+  --arm-angle: 38deg;
+  --arm-transition-duration: 0;
+  --body-bg: #d7d7d5;
+  --border-color: rgba(0, 0, 0, 0.15);
+  --box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1),
+    inset 3px 3px 10px rgba(255, 255, 255, 0.5);
+  --text-color: #222;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100dvh - 4.5rem);
+  padding: clamp(1rem, 3vmin, 2rem);
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  justify-items: stretch;
+  /* Inset from viewport edges; a bit more on the left */
+  padding: clamp(1rem, 3vmin, 2rem) clamp(1rem, 3vmin, 2rem)
+    clamp(1rem, 3vmin, 2rem) clamp(1.25rem, 5vw, 3rem);
+  background-color: var(--body-bg);
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+/* No ::after on large screens — the empty second column holds the right 50% */
+
+.vinyl-player-root *,
+.vinyl-player-root *::before,
+.vinyl-player-root *::after {
+  box-sizing: border-box;
+}
+
+.vinyl-player-profile {
+  grid-column: 2;
+  align-self: center;
+  justify-self: center;
+  padding-inline: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.vinyl-player-deck {
+  grid-column: 1;
+  justify-self: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 3vmin, 2rem);
+  width: max-content;
+  max-width: 100%;
+}
+
+.vinyl-player-root #buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 8em;
+  flex-shrink: 0;
+  z-index: 10;
+  gap: 1em;
+}
+
+.vinyl-player-root #track {
+  width: 8em;
+  margin-bottom: 1em;
+}
+
+.vinyl-player-root #volume {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 8em;
+  height: 7.5em;
+}
+
+.vinyl-player-root #volume .slider {
+  transform: rotate(270deg);
+}
+
+.vinyl-player-root #speed {
+  display: flex;
+  margin-bottom: 1em;
+  width: 8em;
+}
+
+.vinyl-player-root #power {
+  width: 8em;
+  min-height: 5.5em;
+  aspect-ratio: 1;
+}
+
+.vinyl-player-root .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  line-height: 1.2;
+  padding: 0.5em;
+}
+
+.vinyl-player-root .button:active {
+  box-shadow: inset 3px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+.vinyl-player-root .button .label {
+  pointer-events: none;
+}
+
+.vinyl-player-root .indicator {
+  display: inline-block;
+  width: 10px;
+  height: 5px;
+  margin-left: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.vinyl-player-root [data-speed="33"] #speed33 .indicator,
+.vinyl-player-root [data-speed="45"] #speed45 .indicator {
+  background-color: #e74c3c;
+}
+
+.vinyl-player-root #brand {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.vinyl-player-root #brand > a {
+  font-family: "Yesteryear", cursive;
+  font-size: 1.6rem;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.vinyl-player-root #brand .banner {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 3rem;
+  font-size: 1em;
+  background-color: rgba(255, 255, 255, 0.95);
+  text-transform: uppercase;
+}
+
+.vinyl-player-root #brand:hover .banner,
+.vinyl-player-root #brand:focus-within .banner {
+  display: block;
+}
+
+.vinyl-player-root #brand .banner a {
+  color: var(--text-color);
+}
+
+.vinyl-player-root #brand .title {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.vinyl-player-root #turntable {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.vinyl-player-root .vinyl-platter {
+  position: relative;
+  width: var(--record-size);
+  height: var(--record-size);
+  flex-shrink: 0;
+  /* Room for tonearm pivot past the disc edge */
+  margin-top: calc(var(--arm-base-size) * 0.35);
+  margin-right: calc(var(--arm-base-size) * 0.25);
+}
+
+.vinyl-player-root #record-inner {
+  animation: vinyl-spin-label 5.1428s infinite linear;
+  animation-play-state: paused;
+}
+
+.vinyl-player-root [data-speed="45"] .play #record-inner {
+  animation-play-state: running;
+}
+
+.vinyl-player-root #record {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--record-size);
+  height: var(--record-size);
+  background: repeating-radial-gradient(
+    var(--record-color),
+    var(--record-groove-color) 3px,
+    var(--record-groove-color) 3px
+  );
+  border: 20px solid var(--record-groove-color);
+  border-radius: 50%;
+  box-shadow: 3px 3px 15px rgb(0 0 0 / 0.3), -3px -3px 15px rgb(0 0 0 / 0.3);
+  animation: vinyl-spin-record 1.8s infinite linear;
+  transform-origin: calc(var(--record-size) / 2 + 1px) center;
+}
+
+.vinyl-player-root .pause #record {
+  animation-play-state: paused;
+}
+
+.vinyl-player-root #shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: var(--record-size);
+  height: var(--record-size);
+  background: conic-gradient(
+    transparent 20deg,
+    rgba(255, 255, 255, 0.1) 40deg,
+    rgba(255, 255, 255, 0.1) 50deg,
+    transparent 60deg,
+    transparent 200deg,
+    rgba(255, 255, 255, 0.08) 220deg,
+    rgba(255, 255, 255, 0.08) 240deg,
+    transparent 250deg,
+    transparent 340deg
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.vinyl-player-root #label {
+  width: calc(var(--record-size) / 3);
+  height: calc(var(--record-size) / 3);
+  background-color: var(--record-color);
+  border: 5px solid var(--record-groove-color);
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+}
+
+.vinyl-player-root #label iframe {
+  width: calc(var(--record-size) / 3 + var(--label-padding) * 2);
+  height: calc(var(--record-size) / 3 + var(--label-padding) * 2);
+  margin-left: calc(var(--label-padding) * -1);
+  margin-top: calc(var(--label-padding) * -1);
+  border: 0;
+}
+
+.vinyl-player-root #controls {
+  position: absolute;
+  top: calc(var(--arm-base-size) * -0.15);
+  right: calc(var(--arm-base-size) * -0.2);
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.vinyl-player-root #arm {
+  position: relative;
+  border-radius: 50%;
+  padding: 0.65rem;
+  left: 90px;
+  top: -50px;
+}
+
+.vinyl-player-root #arm .base {
+  position: relative;
+  width: var(--arm-base-size);
+  height: var(--arm-base-size);
+  background-color: #d7d7d7;
+  border-radius: 50%;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2),
+    inset 5px 5px 5px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+.vinyl-player-root #arm .arm {
+  position: absolute;
+  top: calc(var(--arm-base-size) / 2 + 0.35rem);
+  right: calc(var(--arm-base-size) / 2 + 0.35rem);
+  width: 10px;
+  height: calc(var(--arm-base-size) * 3.6);
+  background: linear-gradient(to right, #d7d7d6, #eee, #a5a5a3);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  transform: rotate(var(--arm-angle));
+  transform-origin: top center;
+  transition: var(--arm-transition-duration) transform linear;
+}
+
+.vinyl-player-root #arm .head {
+  position: absolute;
+  bottom: 0;
+  left: -10px;
+  width: 30px;
+  height: 50px;
+  background-color: #f7f7f7;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4),
+    inset 3px 3px 3px rgba(255, 255, 255, 0.9),
+    inset -3px -3px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.vinyl-player-root .pulse {
+  animation: vinyl-pulse 1s infinite linear;
+}
+
+@keyframes vinyl-spin-record {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes vinyl-spin-label {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes vinyl-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 1100px) {
+  .vinyl-player-root {
+    --record-size: min(58vmin, 420px);
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: clamp(1rem, 3vmin, 2rem);
+  }
+
+  .vinyl-player-root::after {
+    content: "";
+    grid-column: 1;
+    width: 100%;
+    min-height: min(30dvh, 12rem);
+  }
+
+  .vinyl-player-profile {
+    grid-column: 1;
+    max-width: min(100%, 42rem);
+  }
+
+  .vinyl-player-deck {
+    grid-column: 1;
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    justify-self: center;
+  }
+
+  .vinyl-player-root #turntable {
+    margin-left: 0;
+    align-self: center;
+  }
+
+  .vinyl-player-root #buttons {
+    width: min(100%, 20rem);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    height: auto;
+    gap: 1rem;
+  }
+
+  .vinyl-player-root #power {
+    order: -1;
+    width: 8em;
+  }
+
+  .vinyl-player-root #volume {
+    margin-bottom: 0;
+  }
+
+  .vinyl-player-root #brand {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .vinyl-player-root #brand > a {
+    font-size: 2.5rem;
+  }
+
+  .vinyl-player-root #controls {
+    top: calc(var(--arm-base-size) * -0.12);
+    right: calc(var(--arm-base-size) * -0.18);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .vinyl-player-root {
+    --body-bg: #363538;
+  }
+
+  .vinyl-player-root #brand > a {
+    color: #ccc;
+  }
+
+  .vinyl-player-root #arm .base {
+    background-color: #464548;
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2),
+      inset 5px 5px 5px rgba(255, 255, 255, 0.3),
+      inset -2px -2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .vinyl-player-root #brand .banner {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #ccc;
+  }
+
+  .vinyl-player-root #brand .banner a {
+    color: #ccc;
+  }
+}

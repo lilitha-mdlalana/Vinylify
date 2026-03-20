@@ -1,8 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { serialize, SerializeOptions } from "cookie";
 import axios from "axios";
+import { getSpotifyRedirectUri } from "@/lib/spotify-redirect";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 type SpotifyAuthApiResponse = {
   access_token: string;
@@ -12,36 +11,34 @@ type SpotifyAuthApiResponse = {
   refresh_token: string;
 };
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-  const code = req.query.code;
-  const spotify_redirect_uri = "http://127.0.0.1:3000/api/auth/callback";
+export async function GET(request: NextRequest) {
+  const redirectUri = getSpotifyRedirectUri();
+  const code = request.nextUrl.searchParams.get("code");
 
-  let spotify_client_id: string = "";
-  if (process.env.SPOTIFY_CLIENT_ID) {
-    spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
-  } else {
-    console.error(
-      'Undefined Error: An environmental variable, "SPOTIFY_CLIENT_ID", has something wrong.'
+  if (!code) {
+    return NextResponse.redirect(
+      new URL("/login?error=missing_code", request.url)
     );
   }
 
-  let spotify_client_secret: string = "";
-  if (process.env.SPOTIFY_CLIENT_SECRET) {
-    spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-  } else {
+  const spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
+  const spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+
+  if (!spotify_client_id || !spotify_client_secret) {
     console.error(
-      'Undefined Error: An environmental variable, "SPOTIFY_CLIENT_SECRET", has something wrong.'
+      "SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be set in the environment."
     );
+    return NextResponse.redirect(new URL("/login?error=config", request.url));
   }
 
   const params = new URLSearchParams({
-    code: code as string,
-    redirect_uri: spotify_redirect_uri,
+    code,
+    redirect_uri: redirectUri,
     grant_type: "authorization_code",
   });
 
-  axios
-    .post<SpotifyAuthApiResponse>(
+  try {
+    const { data } = await axios.post<SpotifyAuthApiResponse>(
       "https://accounts.spotify.com/api/token",
       params,
       {
@@ -49,25 +46,38 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
           Authorization:
             "Basic " +
             Buffer.from(
-              spotify_client_id + ":" + spotify_client_secret
+              `${spotify_client_id}:${spotify_client_secret}`
             ).toString("base64"),
           "Content-Type": "application/x-www-form-urlencoded",
         },
       }
-    )
-    .then(async (response) => {
-      if (response.data.access_token) {
-        const cookieStore = await cookies();
-        cookieStore.set("spotify-token", response.data.access_token, {
-          httpOnly: true,
-          secure: true,
-          path: "/",
-        });
-        return NextResponse.redirect("/");
-      }
-      return NextResponse.redirect("/");
-    })
-    .catch((error) => {
-      console.error(`Error: ${error}`);
+    );
+
+    if (!data.access_token) {
+      return NextResponse.redirect(new URL("/login?error=no_token", request.url));
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set("spotify-token", data.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "lax",
     });
+
+    return NextResponse.redirect(new URL("/player", request.url));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Spotify token error:",
+        error.response?.status,
+        error.response?.data
+      );
+    } else {
+      console.error("Spotify token error:", error);
+    }
+    return NextResponse.redirect(
+      new URL("/login?error=token_exchange", request.url)
+    );
+  }
 }

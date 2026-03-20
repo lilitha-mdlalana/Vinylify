@@ -1,3 +1,4 @@
+import { getSpotifyRedirectUri } from "@/lib/spotify-redirect";
 import { NextResponse } from "next/server";
 
 const generateRandomString = (length: number): string => {
@@ -12,8 +13,9 @@ const generateRandomString = (length: number): string => {
 };
 
 export async function GET() {
-  const scope: string = "streaming user-read-email user-read-private";
-  const spotify_redirect_uri = "http://127.0.0.1:3000/api/auth/callback";
+  const scope: string =
+    "streaming user-read-email user-read-private user-library-read playlist-read-private";
+  const spotify_redirect_uri = getSpotifyRedirectUri();
   const state: string = generateRandomString(16);
 
   let spotify_client_id: string = "";
