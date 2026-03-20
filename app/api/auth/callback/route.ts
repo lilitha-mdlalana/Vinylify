@@ -14,7 +14,7 @@ type SpotifyAuthApiResponse = {
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
   const code = req.query.code;
-  const spotify_redirect_uri = "http://localhost:3000/api/auth/callback";
+  const spotify_redirect_uri = "http://127.0.0.1:3000/api/auth/callback";
 
   let spotify_client_id: string = "";
   if (process.env.SPOTIFY_CLIENT_ID) {
