@@ -26,9 +26,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable, outfitHeading.variable)}
     >
-      <body className="flex min-h-svh flex-col pb-28">
+      <body className="flex min-h-svh flex-col pb-28 ">
         <ThemeProvider>
-          <Navbar />
+          <Navbar />   
           {children}
           <AppFloatingDock />
         </ThemeProvider>

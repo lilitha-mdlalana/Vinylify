@@ -14,7 +14,7 @@ const generateRandomString = (length: number): string => {
 
 export async function GET() {
   const scope: string =
-    "streaming user-read-email user-read-private user-library-read playlist-read-private";
+    "streaming user-modify-playback-state user-read-email user-read-private user-library-read playlist-read-private";
   const spotify_redirect_uri = getSpotifyRedirectUri();
   const state: string = generateRandomString(16);
 

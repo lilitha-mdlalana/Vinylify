@@ -29,7 +29,7 @@ const dockItems = [
   {
     title: "Account",
     icon: <IconUser className={iconCls} />,
-    href: "/login",
+    href: "/account",
   },
 ];
 

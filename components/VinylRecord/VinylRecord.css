@@ -4,9 +4,9 @@
   --record-color: #000;
   --record-groove-color: #141414;
   --arm-base-size: calc(var(--record-size) / 5.5);
-  /* Tonearm sweeps from top-right pivot toward the label */
+  /* Tonearm angle overridden per #turntable.arm-parked / .arm-on-record */
   --arm-angle: 38deg;
-  --arm-transition-duration: 0;
+  --arm-transition-duration: 0.85s;
   --body-bg: #d7d7d5;
   --border-color: rgba(0, 0, 0, 0.15);
   --box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1),
@@ -25,9 +25,34 @@
   /* Inset from viewport edges; a bit more on the left */
   padding: clamp(1rem, 3vmin, 2rem) clamp(1rem, 3vmin, 2rem)
     clamp(1rem, 3vmin, 2rem) clamp(1.25rem, 5vw, 3rem);
-  background-color: var(--body-bg);
+  background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    /* optional: border-top/bottom or full border for edge definition */
+    border: 1px solid rgba(255, 255, 255, 0.25);
   font-size: 12px;
   color: var(--text-color);
+}
+
+/* Frosted layer vars; heavy blur only when html.dark (see .dark .frosted-backdrop) */
+.frosted-backdrop {
+  --_gradient-blend-mode: normal;
+  --_gradient-blur: 200px;
+}
+
+.dark .frosted-backdrop {
+  backdrop-filter: blur(var(--_gradient-blur)) contrast(100%) brightness(100%);
+  -webkit-backdrop-filter: blur(var(--_gradient-blur)) contrast(100%) brightness(100%);
+}
+
+.dark .vinyl-player-root.frosted-backdrop {
+  background: radial-gradient(at 62% 82.8%, #000000 0px, transparent 50%),
+    radial-gradient(at 96.2% 91.2%, #ff5500 0px, transparent 50%),
+    radial-gradient(at 0.4% 2.1%, #ff6929 0px, transparent 50%),
+    radial-gradient(at 100% 54.8%, #000000 0px, transparent 50%) #000000;
+  mix-blend-mode: var(--_gradient-blend-mode);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e8e8e8;
 }
 
 /* No ::after on large screens — the empty second column holds the right 50% */
@@ -246,6 +271,7 @@
 }
 
 .vinyl-player-root #label {
+  position: relative;
   width: calc(var(--record-size) / 3);
   height: calc(var(--record-size) / 3);
   background-color: var(--record-color);
@@ -256,12 +282,27 @@
   mask-image: radial-gradient(white, black);
 }
 
-.vinyl-player-root #label iframe {
-  width: calc(var(--record-size) / 3 + var(--label-padding) * 2);
-  height: calc(var(--record-size) / 3 + var(--label-padding) * 2);
-  margin-left: calc(var(--label-padding) * -1);
-  margin-top: calc(var(--label-padding) * -1);
-  border: 0;
+.vinyl-player-root #label .vinyl-label-cover {
+  z-index: 1;
+}
+
+.vinyl-player-root .vinyl-label-placeholder {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 35% 28%,
+    #3d3d3d,
+    #0d0d0d 65%,
+    #050505 100%
+  );
+}
+
+.vinyl-player-root #turntable.arm-parked {
+  --arm-angle: 0deg;
+}
+
+.vinyl-player-root #turntable.arm-on-record {
+  --arm-angle: 25deg;
 }
 
 .vinyl-player-root #controls {
@@ -429,10 +470,6 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .vinyl-player-root {
-    --body-bg: #363538;
-  }
-
   .vinyl-player-root #brand > a {
     color: #ccc;
   }

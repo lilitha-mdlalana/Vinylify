@@ -139,6 +139,9 @@ export default function Navbar() {
           <DropdownMenuItem render={<Link href="/player" />}>
             Player
           </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/account" />}>
+            Account
+          </DropdownMenuItem>
           <DropdownMenuItem variant="destructive" onClick={logout}>
             <LogOut className="size-4" />
             Log out
@@ -228,6 +231,9 @@ export default function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem render={<Link href="/player" />}>
                   Player
+                </DropdownMenuItem>
+                <DropdownMenuItem render={<Link href="/account" />}>
+                  Account
                 </DropdownMenuItem>
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
