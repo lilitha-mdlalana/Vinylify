@@ -18,7 +18,6 @@ import { cn } from "@/lib/utils";
 import {
   LogOut,
   Menu,
-  Search,
   Settings2,
   UserRound,
 } from "lucide-react";
@@ -69,7 +68,7 @@ function VinylMark({ className }: { className?: string }) {
 }
 
 const navIconButtonClass =
-  "size-10 rounded-full border border-white/[0.12] bg-white/[0.06] text-zinc-100 shadow-none hover:bg-white/[0.1] hover:text-white dark:border-white/[0.12] dark:bg-white/[0.06]";
+  "size-10 rounded-full border border-border bg-muted/50 text-foreground shadow-none hover:bg-muted hover:text-foreground";
 
 export default function Navbar() {
   const router = useRouter();
@@ -161,7 +160,7 @@ export default function Navbar() {
     );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-900 text-zinc-50 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]">
+    <header className="sticky top-0 z-50 border-b border-border bg-transparent text-foreground">
       <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href="/"
@@ -175,16 +174,6 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2 sm:gap-2.5">
           <div className="hidden items-center gap-2 sm:flex">
-            <Button
-              variant="outline"
-              size="icon"
-              className={navIconButtonClass}
-              render={<Link href="/" />}
-            >
-              <Search className="size-[1.125rem]" />
-              <span className="sr-only">Search</span>
-            </Button>
-
             <DropdownMenu>
               <DropdownMenuTrigger
                 className={cn(
@@ -225,10 +214,6 @@ export default function Navbar() {
                 <span className="sr-only">Open menu</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem render={<Link href="/" />}>
-                  <Search className="size-4" />
-                  Search
-                </DropdownMenuItem>
                 <DropdownMenuItem render={<Link href="/player" />}>
                   Player
                 </DropdownMenuItem>

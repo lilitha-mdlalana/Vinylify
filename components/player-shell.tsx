@@ -16,7 +16,7 @@ export function PlayerShell() {
       <PlaybackDeckProvider>
         <div
           className={cn(
-            "absolute inset-0 flex flex-col overflow-auto",
+            "absolute inset-0 flex flex-col",
             activeTab === "deck" ? "z-[2]" : "z-[1]",
             activeTab !== "deck" &&
               "pointer-events-none invisible opacity-0"

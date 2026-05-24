@@ -68,11 +68,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/player", request.url));
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error(
-        "Spotify token error:",
-        error.response?.status,
-        error.response?.data
-      );
+      console.error("Spotify token error:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        code: error.code,
+        message: error.message,
+      });
     } else {
       console.error("Spotify token error:", error);
     }

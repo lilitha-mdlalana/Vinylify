@@ -1,21 +1,18 @@
 "use client";
 
 import { FloatingDock } from "@/components/ui/floating-dock";
+import type { MeResponse, SpotifyUserProfile } from "@/types/spotify-profile";
 import {
   IconCompass,
   IconDisc,
-  IconHome,
   IconUser,
 } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const iconCls = "h-full w-full text-neutral-500 dark:text-neutral-300";
 
 const dockItems = [
-  {
-    title: "Home",
-    icon: <IconHome className={iconCls} />,
-    href: "/",
-  },
   {
     title: "Turntable",
     icon: <IconDisc className={iconCls} />,
@@ -34,6 +31,28 @@ const dockItems = [
 ];
 
 export function AppFloatingDock() {
+  const [user, setUser] = useState<SpotifyUserProfile | null | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((data: MeResponse) => {
+        if (!cancelled) setUser(data.user ?? null);
+      })
+      .catch(() => {
+        if (!cancelled) setUser(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const pathname = usePathname();
+  if (!user || pathname === "/") return null;
+
   return (
     <div
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-end px-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:justify-center"

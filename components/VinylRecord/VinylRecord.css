@@ -469,6 +469,60 @@
   }
 }
 
+/* ── Premium layered background ──────────────────────────────────────────── */
+
+.vinyl-player-root {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.bg-layer-art {
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px);
+  opacity: 0.4;
+  transform: scale(1.1); /* prevent blur from exposing edges */
+  transition: background-image 0.8s ease, opacity 0.6s ease;
+}
+
+.bg-layer-gradient {
+  z-index: 1;
+  transition: opacity 0.8s ease, background 0.8s ease;
+}
+
+.bg-layer-dark {
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* When JS colors are active, clear the hardcoded CSS background */
+.vinyl-player-root.frosted-backdrop[data-has-colors] {
+  background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.dark .vinyl-player-root.frosted-backdrop[data-has-colors] {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Content must sit above all bg layers */
+.vinyl-player-deck,
+.vinyl-player-profile {
+  position: relative;
+  z-index: 3;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
 @media (prefers-color-scheme: dark) {
   .vinyl-player-root #brand > a {
     color: #ccc;

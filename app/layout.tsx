@@ -3,7 +3,6 @@ import { Geist_Mono, Inter, Outfit } from "next/font/google"
 import "./globals.css"
 import { AppFloatingDock } from "@/components/app-floating-dock"
 import Navbar from "@/components/navbar/navbar"
-import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 
 const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
@@ -23,15 +22,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable, outfitHeading.variable)}
+      className={cn("dark antialiased", fontMono.variable, "font-sans", inter.variable, outfitHeading.variable)}
     >
-      <body className="flex min-h-svh flex-col pb-28 ">
-        <ThemeProvider>
-          <Navbar />   
-          {children}
-          <AppFloatingDock />
-        </ThemeProvider>
+      <body className="flex min-h-svh flex-col pb-28">
+        <Navbar />
+        {children}
+        <AppFloatingDock />
       </body>
     </html>
   )
