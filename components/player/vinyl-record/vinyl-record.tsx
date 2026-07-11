@@ -1,11 +1,13 @@
 "use client";
 
-import { DeckPlayerPanel } from "@/components/deck-player-panel";
-import { usePlaybackDeck } from "@/components/playback-deck-context";
-import { VinylRecordDeck } from "@/components/VinylRecord/vinyl-record-deck";
+import { DeckPlayerPanel } from "@/components/player/deck-player-panel";
+import { usePlaybackDeck } from "@/components/player/playback-deck-context";
+import { VinylRecordDeck } from "@/components/player/vinyl-record/vinyl-record-deck";
 import { getPaletteSync } from "colorthief";
 import { useEffect, useState } from "react";
-import "./VinylRecord.css";
+import "./vinyl-record.css";
+import "./vinyl-turntable.css";
+import "./vinyl-background.css";
 
 async function extractColors(
   url: string

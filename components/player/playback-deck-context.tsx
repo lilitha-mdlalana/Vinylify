@@ -25,6 +25,9 @@ const PlaybackDeckContext = createContext<{
   setDeckPlayback: (partial: Partial<DeckPlaybackState>) => void;
   spotifyDeviceId: string | null;
   setSpotifyDeviceId: (id: string | null) => void;
+  /** SDK player instance, for components that drive playback directly (vinyl gestures) */
+  player: SpotifyWebPlaybackPlayer | undefined;
+  setPlayer: (player: SpotifyWebPlaybackPlayer | undefined) => void;
 } | null>(null);
 
 export function PlaybackDeckProvider({ children }: { children: ReactNode }) {
@@ -32,6 +35,9 @@ export function PlaybackDeckProvider({ children }: { children: ReactNode }) {
   const [spotifyDeviceId, setSpotifyDeviceIdState] = useState<string | null>(
     null
   );
+  const [player, setPlayerState] = useState<
+    SpotifyWebPlaybackPlayer | undefined
+  >(undefined);
 
   const setDeckPlayback = useCallback((partial: Partial<DeckPlaybackState>) => {
     setDeck((prev) => ({ ...prev, ...partial }));
@@ -41,14 +47,20 @@ export function PlaybackDeckProvider({ children }: { children: ReactNode }) {
     setSpotifyDeviceIdState(id);
   }, []);
 
+  const setPlayer = useCallback((p: SpotifyWebPlaybackPlayer | undefined) => {
+    setPlayerState(p);
+  }, []);
+
   const value = useMemo(
     () => ({
       deck,
       setDeckPlayback,
       spotifyDeviceId,
       setSpotifyDeviceId,
+      player,
+      setPlayer,
     }),
-    [deck, setDeckPlayback, spotifyDeviceId, setSpotifyDeviceId]
+    [deck, setDeckPlayback, spotifyDeviceId, setSpotifyDeviceId, player, setPlayer]
   );
 
   return (

@@ -22,6 +22,8 @@ declare global {
     getVolume(): Promise<number>;
     setVolume(volume: number): Promise<void>;
     seek(positionMs: number): Promise<void>;
+    pause(): Promise<void>;
+    resume(): Promise<void>;
     setShuffle(state: boolean): Promise<void>;
     setRepeat(repeatMode: number): Promise<void>;
     previousTrack(): Promise<void>;

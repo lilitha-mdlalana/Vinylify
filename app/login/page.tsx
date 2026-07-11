@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "@/components/auth/login-form";
 import { Disc2Icon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";

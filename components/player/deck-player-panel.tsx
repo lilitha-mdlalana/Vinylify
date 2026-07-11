@@ -1,6 +1,6 @@
 "use client";
 
-import { usePlaybackDeck } from "@/components/playback-deck-context";
+import { usePlaybackDeck } from "@/components/player/playback-deck-context";
 import { cn } from "@/lib/utils";
 import {
   MonitorSmartphone,
@@ -44,7 +44,7 @@ function albumCoverUrl(track: SpotifyWebPlaybackTrack | null) {
 }
 
 export function DeckPlayerPanel({ className }: { className?: string }) {
-  const { setDeckPlayback, setSpotifyDeviceId } = usePlaybackDeck();
+  const { setDeckPlayback, setSpotifyDeviceId, setPlayer } = usePlaybackDeck();
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [tokenError, setTokenError] = useState(false);
@@ -110,6 +110,7 @@ export function DeckPlayerPanel({ className }: { className?: string }) {
 
       playerRef.current = instance;
       setSdkPlayer(instance);
+      setPlayer(instance);
 
       instance.addListener("ready", (payload) => {
         const { device_id } = payload as { device_id: string };
@@ -194,10 +195,11 @@ export function DeckPlayerPanel({ className }: { className?: string }) {
       }
       playerRef.current = undefined;
       setSdkPlayer(undefined);
+      setPlayer(undefined);
       setIsActive(false);
       delete window.onSpotifyWebPlaybackSDKReady;
     };
-  }, [accessToken, setSpotifyDeviceId]);
+  }, [accessToken, setSpotifyDeviceId, setPlayer]);
 
   useEffect(() => {
     const p = playerRef.current;

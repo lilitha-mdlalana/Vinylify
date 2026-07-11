@@ -1,4 +1,4 @@
-import { PlayerShell } from "@/components/player-shell";
+import { PlayerShell } from "@/components/player/player-shell";
 import { Suspense } from "react";
 
 export default function PlayerPage() {

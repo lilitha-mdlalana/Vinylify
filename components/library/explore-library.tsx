@@ -1,6 +1,6 @@
 "use client";
 
-import { usePlaybackDeck } from "@/components/playback-deck-context";
+import { usePlaybackDeck } from "@/components/player/playback-deck-context";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {

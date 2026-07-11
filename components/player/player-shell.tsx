@@ -1,8 +1,8 @@
 "use client";
 
-import { ExploreLibrary } from "@/components/explore-library";
-import { PlaybackDeckProvider } from "@/components/playback-deck-context";
-import VinylRecord from "@/components/VinylRecord/VinylRecord";
+import { ExploreLibrary } from "@/components/library/explore-library";
+import { PlaybackDeckProvider } from "@/components/player/playback-deck-context";
+import VinylRecord from "@/components/player/vinyl-record/vinyl-record";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 

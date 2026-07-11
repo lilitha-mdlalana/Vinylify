@@ -1,101 +1,122 @@
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import "./home.css";
+
+function Starburst({ className }: { className?: string }) {
+  return (
+    <div className={className} aria-hidden>
+      <svg viewBox="-110 -110 220 220" xmlns="http://www.w3.org/2000/svg">
+        <g fill="currentColor">
+          {Array.from({ length: 8 }, (_, i) => (
+            <rect
+              key={i}
+              x="-11"
+              y="-102"
+              width="22"
+              height="86"
+              rx="11"
+              transform={`rotate(${i * 45})`}
+            />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+}
 
 export default async function Page() {
   const cookieStore = await cookies();
   if (cookieStore.get("spotify-token")?.value) redirect("/player");
 
   return (
-    <div className="flex min-h-svh flex-col bg-background text-foreground">
-      {/* Hero */}
-      <section className="flex min-h-[75vh] flex-col items-center justify-center gap-10 px-6 text-center">
-        <div className="flex flex-col items-center gap-6">
-          {/* Vinyl icon */}
-          <svg
-            viewBox="0 0 40 40"
-            className="size-20 drop-shadow-[0_0_24px_rgba(234,88,12,0.6)]"
-            aria-hidden
-          >
-            <circle cx="20" cy="20" r="19" fill="#18181b" stroke="#ea580c" strokeWidth="1.5" />
-            <circle cx="20" cy="20" r="13" fill="none" stroke="#3f3f46" strokeWidth="1" />
-            <circle cx="20" cy="20" r="8" fill="none" stroke="#3f3f46" strokeWidth="1" />
-            <circle cx="20" cy="20" r="3" fill="#ea580c" />
-            <circle cx="20" cy="20" r="1.5" fill="#18181b" />
-          </svg>
+    <main className="home-stage">
+      <Starburst className="home-burst home-burst-right" />
+      <Starburst className="home-burst home-burst-left" />
 
-          <div className="flex flex-col gap-3">
-            <h1 className="font-heading text-5xl font-semibold tracking-tight sm:text-6xl">
-              Vinylify
-            </h1>
-            <p className="max-w-md text-lg text-muted-foreground sm:text-xl">
-              Your music. The vinyl way.
-            </p>
-            <p className="max-w-sm text-sm text-muted-foreground">
-              Connect your Spotify and spin records with a premium turntable experience.
-            </p>
-          </div>
+      <section className="home-grid">
+        <p className="home-eyebrow home-rise" style={{ "--rise-delay": "0s" } as React.CSSProperties}>
+          <span className="home-eyebrow-mark">✳</span>
+          <span>Vinylify</span>
+          <span className="home-eyebrow-thin">A turntable for Spotify</span>
+        </p>
 
-          <div className="flex flex-col items-center gap-3 sm:flex-row">
-            <Link
-              href="/login"
-              className="group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 h-9 gap-1.5 px-2.5 min-w-48 bg-[#ea580c] text-white hover:bg-[#c2410c]"
-            >
+        <h1
+          className="home-title home-rise"
+          style={{ "--rise-delay": "0.1s" } as React.CSSProperties}
+        >
+          Drop
+          <br />
+          the
+          <br />
+          <em>Needle</em>
+        </h1>
+
+        <div
+          className="home-col home-rise"
+          style={{ "--rise-delay": "0.2s" } as React.CSSProperties}
+        >
+          <h2>The Deck</h2>
+          <p>
+            A real deck, not a skin. Drag the record backwards to rewind. Lift
+            the tonearm off the groove and the music stops — set it back down
+            and it plays. Your whole Spotify library, pressed to wax.
+          </p>
+        </div>
+
+        <div
+          className="home-col home-rise"
+          style={{ "--rise-delay": "0.3s" } as React.CSSProperties}
+        >
+          <h2>Overview</h2>
+          <p>
+            Vinylify turns streaming back into a ritual. Pick an album, set it
+            spinning, and listen the way records were meant to be heard — one
+            side at a time, artwork first.
+          </p>
+          <div className="home-cta-row">
+            <Link href="/login" className="home-cta">
               Sign in with Spotify
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M2 8h11M9 3.5 13.5 8 9 12.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
-            <p className="text-xs text-muted-foreground">
-              Requires Spotify Premium
-            </p>
+            <span className="home-cta-note">Requires Spotify Premium</span>
           </div>
         </div>
-      </section>
 
-      {/* Features */}
-      <section className="mx-auto w-full max-w-5xl px-6 pb-24">
-        <h2 className="mb-8 text-center font-heading text-2xl font-semibold tracking-tight">
-          Everything you need
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="mb-2 text-2xl">🎵</div>
-              <CardTitle>Vinyl Aesthetic</CardTitle>
-              <CardDescription>
-                Spinning record visualization synced frame-by-frame to your music.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="mb-2 text-2xl">🔗</div>
-              <CardTitle>Spotify Connect</CardTitle>
-              <CardDescription>
-                Play from any device and control it right here, no extra setup.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="mb-2 text-2xl">🎨</div>
-              <CardTitle>Living Artwork</CardTitle>
-              <CardDescription>
-                Album art drives the background. Every track, a different atmosphere.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+        <div
+          className="home-col home-rise"
+          style={{ "--rise-delay": "0.4s" } as React.CSSProperties}
+        >
+          <h2>Living Artwork</h2>
+          <p>
+            The album does the decorating. Cover art is pressed into the
+            record label, and its palette bleeds out into the backdrop — every
+            track changes the light in the room.
+          </p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-        Vinylify — built with Spotify Web API
+      <footer
+        className="home-footer home-rise"
+        style={{ "--rise-delay": "0.5s" } as React.CSSProperties}
+      >
+        <span>Vinylify © 2026 — Pressed with the Spotify Web API</span>
+        <span>33⅓ RPM</span>
       </footer>
-    </div>
+    </main>
   );
 }
