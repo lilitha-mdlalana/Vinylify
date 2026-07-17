@@ -1,8 +1,6 @@
 import { Fraunces, Geist_Mono, Inter, Outfit } from "next/font/google"
 
 import "./globals.css"
-import { AppFloatingDock } from "@/components/layout/app-floating-dock"
-import Navbar from "@/components/layout/navbar"
 import { cn } from "@/lib/utils";
 
 const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
@@ -30,10 +28,8 @@ export default function RootLayout({
       lang="en"
       className={cn("dark antialiased", fontMono.variable, "font-sans", inter.variable, outfitHeading.variable, frauncesDisplay.variable)}
     >
-      <body className="flex min-h-svh flex-col pb-28">
-        <Navbar />
+      <body className="flex min-h-svh flex-col">
         {children}
-        <AppFloatingDock />
       </body>
     </html>
   )

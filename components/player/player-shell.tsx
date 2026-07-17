@@ -12,7 +12,7 @@ export function PlayerShell() {
     searchParams.get("tab") === "explore" ? "explore" : "deck";
 
   return (
-    <main className="relative min-h-0 flex-1 ">
+    <main className="relative min-h-0 flex-1">
       <PlaybackDeckProvider>
         <div
           className={cn(
@@ -27,7 +27,7 @@ export function PlayerShell() {
         </div>
         <div
           className={cn(
-            "bg-background absolute inset-0 flex min-h-0 flex-col overflow-auto",
+            "bg-background scrollbar-hide absolute inset-0 flex min-h-0 flex-col overflow-auto",
             activeTab === "explore" ? "z-[2]" : "z-[1]",
             activeTab !== "explore" &&
               "pointer-events-none invisible opacity-0"

@@ -4,6 +4,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
@@ -129,11 +130,13 @@ export default function Navbar() {
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-48">
-          <DropdownMenuLabel className="font-normal">
-            <p className="truncate text-sm font-medium text-foreground">
-              {user.displayName ?? "Spotify user"}
-            </p>
-          </DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="font-normal">
+              <p className="truncate text-sm font-medium text-foreground">
+                {user.displayName ?? "Spotify user"}
+              </p>
+            </DropdownMenuLabel>
+          </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem render={<Link href="/player" />}>
             Player
@@ -160,7 +163,12 @@ export default function Navbar() {
     );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-transparent text-foreground">
+    <header className="sticky top-0 z-50 overflow-hidden border-b border-border text-foreground">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 scale-110 bg-[image:var(--player-navbar-cover,none)] bg-cover bg-center opacity-40 blur-2xl transition-opacity duration-500"
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-black" />
       <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href="/"
@@ -173,33 +181,6 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="hidden items-center gap-2 sm:flex">
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "icon" }),
-                  navIconButtonClass
-                )}
-              >
-                <Settings2 className="size-[1.125rem]" />
-                <span className="sr-only">Settings</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-44">
-                <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-                <DropdownMenuRadioGroup
-                  value={theme ?? "system"}
-                  onValueChange={setTheme}
-                >
-                  <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="system">
-                    System
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
           <div className="hidden sm:block">{authSection}</div>
 
           <div className="sm:hidden">

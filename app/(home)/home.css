@@ -2,18 +2,15 @@
    Near-black stage, rust × teal gradient mesh, grain, display serif,
    all-caps letterspaced labels, orange starburst accents. */
 
-.home-stage {
+.home-shell {
   --home-ink: #f3eee7;
   --home-ink-dim: rgba(243, 238, 231, 0.68);
   --home-orange: #ef5222;
   --home-orange-deep: #c23a12;
 
-  position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: calc(100svh - 4.25rem);
-  overflow: hidden;
+  min-height: 100svh;
   color: var(--home-ink);
   background:
     radial-gradient(52% 64% at 80% 26%, rgba(14, 66, 58, 0.9) 0%, transparent 68%),
@@ -22,6 +19,14 @@
     radial-gradient(34% 44% at 55% 96%, rgba(206, 86, 22, 0.38) 0%, transparent 70%),
     radial-gradient(30% 40% at 8% 24%, rgba(70, 22, 6, 0.5) 0%, transparent 70%),
     #060505;
+}
+
+.home-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
 }
 
 /* Film grain */

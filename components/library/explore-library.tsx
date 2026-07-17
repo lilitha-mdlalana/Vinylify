@@ -339,7 +339,7 @@ export function ExploreLibrary({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "mx-auto flex w-full max-w-5xl flex-col gap-12 overflow-y-auto px-5 py-8 pb-24 sm:px-8",
+        "scrollbar-hide mx-auto flex w-full max-w-5xl flex-col gap-12 overflow-y-auto px-5 py-8 pb-24 sm:px-8",
         className
       )}
     >

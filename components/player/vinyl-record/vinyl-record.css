@@ -1,5 +1,5 @@
 .vinyl-player-root {
-  --record-size: min(68vmin, 520px);
+  --record-size: min(81.6vmin, 624px);
   --label-padding: min(7vmin, 40px);
   --record-color: #000;
   --record-groove-color: #141414;
@@ -200,7 +200,7 @@
 
 @media (max-width: 1100px) {
   .vinyl-player-root {
-    --record-size: min(58vmin, 420px);
+    --record-size: min(69.6vmin, 504px);
     grid-template-columns: 1fr;
     justify-items: center;
     padding: clamp(1rem, 3vmin, 2rem);

@@ -56,6 +56,25 @@ export default function VinylRecord() {
     ? `linear-gradient(135deg, rgb(${colors[0]}) 0%, rgb(${colors[1] ?? colors[0]}) 60%, rgb(${colors[2] ?? [0, 0, 0]}) 100%)`
     : "transparent";
 
+  // Give the navbar the exact same blurred-cover-art treatment as the
+  // bg-layer-art/bg-layer-dark deck layers below, keyed off coverUrl (not
+  // the colorthief palette) so it can't silently stay unset if canvas
+  // extraction ever fails cross-origin.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (coverUrl) {
+      root.style.setProperty(
+        "--player-navbar-cover",
+        `url(/_next/image?url=${encodeURIComponent(coverUrl)}&w=640&q=75)`
+      );
+    } else {
+      root.style.removeProperty("--player-navbar-cover");
+    }
+    return () => {
+      root.style.removeProperty("--player-navbar-cover");
+    };
+  }, [coverUrl]);
+
   return (
     <div
       className="vinyl-player-root frosted-backdrop"

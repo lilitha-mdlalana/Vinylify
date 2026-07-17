@@ -88,8 +88,8 @@
 
 .vinyl-player-root #label {
   position: relative;
-  width: calc(var(--record-size) / 3);
-  height: calc(var(--record-size) / 3);
+  width: calc(var(--record-size) / 2.3);
+  height: calc(var(--record-size) / 2.3);
   background-color: var(--record-color);
   border: 5px solid var(--record-groove-color);
   border-radius: 50%;
