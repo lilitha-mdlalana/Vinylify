@@ -3,6 +3,7 @@
 import { FloatingDock } from "@/components/ui/floating-dock";
 import type { MeResponse, SpotifyUserProfile } from "@/types/spotify-profile";
 import {
+  IconDeviceAudioTape,
   IconCompass,
   IconDisc,
   IconUser,
@@ -22,6 +23,11 @@ const dockItems = [
     title: "Explore",
     icon: <IconCompass className={iconCls} />,
     href: "/player?tab=explore",
+  },
+  {
+    title: "New Mixtape",
+    icon: <IconDeviceAudioTape className={iconCls} />,
+    href: "/mixtapes/new",
   },
   {
     title: "Account",

@@ -268,8 +268,10 @@ export function DeckPlayerPanel({ className }: { className?: string }) {
     setDeckPlayback({
       coverUrl,
       isPlaying: deckIsPlaying,
+      positionMs,
+      durationMs,
     });
-  }, [coverUrl, deckIsPlaying, setDeckPlayback]);
+  }, [coverUrl, deckIsPlaying, positionMs, durationMs, setDeckPlayback]);
 
   const cycleRepeat = useCallback(() => {
     if (!sdkPlayer || transportDisabled) {

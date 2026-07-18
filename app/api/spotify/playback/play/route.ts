@@ -1,5 +1,6 @@
 import { getSpotifyAccessToken } from "@/lib/spotify-token";
 import { spotifyFetchWithBackoff } from "@/lib/spotify-fetch-backoff";
+import { CONTEXT_URI_RE, TRACK_URI_RE } from "@/lib/spotify";
 import { NextRequest, NextResponse } from "next/server";
 
 type PlayBody = {
@@ -7,10 +8,6 @@ type PlayBody = {
   contextUri?: string;
   uris?: string[];
 };
-
-const CONTEXT_URI_RE =
-  /^spotify:(album|playlist|artist):[a-zA-Z0-9]{10,}$/;
-const TRACK_URI_RE = /^spotify:track:[a-zA-Z0-9]{10,}$/;
 
 export async function POST(request: NextRequest) {
   const token = await getSpotifyAccessToken();

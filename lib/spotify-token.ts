@@ -1,6 +1,6 @@
-import { cookies } from "next/headers";
+import { getValidAccessToken } from "@/lib/spotify-session";
 
+/** Returns a usable Spotify access token, refreshing it silently if expired. */
 export async function getSpotifyAccessToken(): Promise<string | null> {
-  const cookieStore = await cookies();
-  return cookieStore.get("spotify-token")?.value ?? null;
+  return getValidAccessToken();
 }

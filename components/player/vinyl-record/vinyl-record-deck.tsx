@@ -1,6 +1,6 @@
 "use client";
 
-import { usePlaybackDeck } from "@/components/player/playback-deck-context";
+import type { DeckSkinProps } from "@/components/player/skins/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -46,9 +46,7 @@ type ArmDragState = {
   startArmDeg: number;
 };
 
-export function VinylRecordDeck() {
-  const { deck, player } = usePlaybackDeck();
-  const { coverUrl, isPlaying } = deck;
+export function VinylRecordDeck({ coverUrl, isPlaying, player }: DeckSkinProps) {
 
   const platterRef = useRef<HTMLDivElement | null>(null);
   const armBaseRef = useRef<HTMLDivElement | null>(null);

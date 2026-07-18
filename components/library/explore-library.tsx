@@ -4,12 +4,14 @@ import { usePlaybackDeck } from "@/components/player/playback-deck-context";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
+  CassetteTape,
   ChevronRight,
   Disc3,
   ExternalLink,
   Loader2,
   Play,
 } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -194,6 +196,16 @@ function PlaylistCrateCard({
             )}
             Play
           </Button>
+          <Link
+            href={`/mixtapes/new?playlist=${playlist.id}`}
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "inline-flex"
+            )}
+          >
+            <CassetteTape className="mr-1 size-3.5" aria-hidden />
+            Mixtape
+          </Link>
           <a
             href={`https://open.spotify.com/playlist/${playlist.id}`}
             target="_blank"

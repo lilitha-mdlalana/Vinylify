@@ -10,5 +10,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/player", "/player/:path*"],
+  matcher: ["/player", "/player/:path*", "/mixtapes", "/mixtapes/:path*"],
 };

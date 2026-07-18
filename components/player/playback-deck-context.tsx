@@ -13,11 +13,15 @@ export type DeckPlaybackState = {
   coverUrl: string | null;
   /** True when this device is active, a track exists, and playback is not paused */
   isPlaying: boolean;
+  positionMs: number;
+  durationMs: number;
 };
 
 const defaultDeck: DeckPlaybackState = {
   coverUrl: null,
   isPlaying: false,
+  positionMs: 0,
+  durationMs: 0,
 };
 
 const PlaybackDeckContext = createContext<{

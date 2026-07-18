@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { getValidAccessToken } from "@/lib/spotify-session";
 import { NextResponse } from "next/server";
 
 import type { SpotifyUserProfile } from "@/types/spotify-profile";
@@ -21,8 +21,7 @@ type SpotifyMeApi = {
 };
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("spotify-token")?.value;
+  const token = await getValidAccessToken();
 
   if (!token) {
     return NextResponse.json({ user: null });

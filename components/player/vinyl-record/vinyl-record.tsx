@@ -29,28 +29,32 @@ async function extractColors(
 }
 
 export default function VinylRecord() {
-  const { deck } = usePlaybackDeck();
-  const { coverUrl } = deck;
+  const { deck, player } = usePlaybackDeck();
+  const { coverUrl, isPlaying } = deck;
 
-  const [colors, setColors] = useState<[number, number, number][] | null>(null);
+  const [extracted, setExtracted] = useState<
+    [number, number, number][] | null
+  >(null);
 
   useEffect(() => {
     if (!coverUrl) {
-      setColors(null);
-      return;
+      return undefined;
     }
     let cancelled = false;
     extractColors(coverUrl)
       .then((p) => {
-        if (!cancelled) setColors(p);
+        if (!cancelled) setExtracted(p);
       })
       .catch(() => {
-        if (!cancelled) setColors(null);
+        if (!cancelled) setExtracted(null);
       });
     return () => {
       cancelled = true;
     };
   }, [coverUrl]);
+
+  // Derive instead of clearing state in the effect: no cover, no palette
+  const colors = coverUrl ? extracted : null;
 
   const gradientBg = colors
     ? `linear-gradient(135deg, rgb(${colors[0]}) 0%, rgb(${colors[1] ?? colors[0]}) 60%, rgb(${colors[2] ?? [0, 0, 0]}) 100%)`
@@ -106,7 +110,11 @@ export default function VinylRecord() {
 
       {/* Layer 4: content — display:contents preserves grid layout */}
       <div style={{ display: "contents" }}>
-        <VinylRecordDeck />
+        <VinylRecordDeck
+          coverUrl={coverUrl}
+          isPlaying={isPlaying}
+          player={player}
+        />
         <DeckPlayerPanel />
       </div>
     </div>
