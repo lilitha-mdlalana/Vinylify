@@ -20,6 +20,20 @@ export async function GET(request: NextRequest) {
   const scope: string =
     "streaming user-modify-playback-state user-read-email user-read-private user-library-read playlist-read-private";
   const spotify_redirect_uri = getSpotifyRedirectUri();
+
+  // The state/returnTo cookies must be set on the host Spotify redirects back
+  // to (e.g. 127.0.0.1), or callback verification can't see them. If the user
+  // is browsing on a different host (e.g. localhost), hop there first.
+  const callbackUrl = new URL(spotify_redirect_uri);
+  const requestHost = request.headers.get("host");
+  if (requestHost && requestHost !== callbackUrl.host) {
+    const hop = new URL(
+      request.nextUrl.pathname + request.nextUrl.search,
+      callbackUrl.origin
+    );
+    return NextResponse.redirect(hop);
+  }
+
   const state = randomBytes(16).toString("hex");
 
   let spotify_client_id: string = "";
